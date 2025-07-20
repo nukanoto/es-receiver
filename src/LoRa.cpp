@@ -9,8 +9,8 @@
 
 // int rxPin = 16; // ESP32 UART2 RXD
 // int txPin = 17; // ESP32 UART2 TXD
-int rxPin = 19; // ESP32 S3 UART2 RXD
-int txPin = 20; // ESP32 S3 UART2 TXD
+int rxPin = 16; // ESP32 S3 UART0 RXD
+int txPin = 15; // ESP32 S3 UART0 TXD
 
 
 void LoRaReset(){

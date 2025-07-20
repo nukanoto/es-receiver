@@ -8,30 +8,47 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "LoRa.h"
+#include "es.h"
+
+ES920LR3 lora; // ES920LR3インスタンスを作成
 
 void setup()
 {
-  LoRaInit();
+  Serial.begin(115200);
+  while (!Serial)
+  {
+  } // Wait
+
+  Serial.println("LoRa Receiver");
+  if (lora.init())
+  {
+    Serial.println("LoRa initialization successful");
+  }
+  else
+  {
+    Serial.println("LoRa initialization failed");
+  }
 }
 
-int count = 0;
+bool first = false;
 void loop()
 {
-  Serial.println("Count: " + String(count));
-  count++;
+	if (!first) Serial.print("Waiting");
+  Serial.print(".");
+  first = true;
 
-  String str;
-  // char ss[10];
-  char Buf[5];
-  if (Serial2.available())
+  // ES920LR3クラスのメソッドを使用してデータ受信をチェック
+  if (lora.is_available())
   {
-    Serial.println("Serial2 available");
-    String rxs = Serial2.readString();
-    Serial.print(rxs);
+	  first = false;
+	  Serial.println("");
+    Serial.println("LoRa data available");
+    String rxs = lora.receive_data();
+    Serial.println("Received: " + rxs);
 
-    Serial.println("T: " + rxs.substring(2, 6) + " 'C ");
+    // 元のデータ解析処理（コメントアウト解除する場合）
     /*
+    char Buf[5];
     rxs.toCharArray(Buf, 5);
     int16_t rssi = abs(strtol(Buf,NULL,16));
     rxs = rxs.substring(4);
@@ -46,7 +63,8 @@ void loop()
     }
     Serial.print("R: ");
     Serial.print(rssi);
-    Serial.print(" dBm ");*/
+    Serial.print(" dBm ");
+    */
   }
   delay(1000);
 }
