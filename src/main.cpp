@@ -34,7 +34,7 @@ bool first = false;
 void loop()
 {
 	if (!first) Serial.print("Waiting");
-  Serial.print(".");
+  // Serial.print(".");
   first = true;
 
   // ES920LR3クラスのメソッドを使用してデータ受信をチェック
@@ -66,5 +66,5 @@ void loop()
     Serial.print(" dBm ");
     */
   }
-  delay(1000);
+  // delay(1000);
 }
